@@ -4,7 +4,6 @@
 Usage:
   {py} [options] view
   {py} [options] merge <inputXML1> <inputXML2>
-  {py} [options] generate
   {py} (-h | --help)
   {py} -v
 
@@ -25,13 +24,14 @@ from docopt import docopt
 from lxml import etree
 import logging
 import os
+import pbr.version
 import sys
 
 __author__ = "Luis Rueda"
 __email__ = "userlerueda@gmail.com"
 __status__ = "Development"   # Prototype, Development or Production
 # __version__ = pbr.version.VersionInfo('xmltools').release_string()
-__version__ = "0.0.1"
+__version__ = pbr.version.VersionInfo('xmltools').release_string()
 
 
 def main():
@@ -82,20 +82,21 @@ def main():
                 args["--tag"], args["<inputXML1>"], args["<inputXML1>"]))
         if args["--output"]:
             outFile = open(args["--output"], 'w')
-            root1.getroottree().write(outFile, pretty_print=args["--pretty_print"])
+            root1.getroottree().write(
+                outFile, pretty_print=args["--pretty_print"])
 
-    if args["generate"]:
-        root = etree.Element('config', xmlns='http://tail-f.com/ns/config/1.0')
-        print(type(root))
-        print(root.tag)
-        catalogET = etree.SubElement(root, 'catalog', xmlns='http://cisco.com/ns/branch-infra-common')
-        nameET = etree.SubElement(catalogET, 'name')
-        nameET.text = 'vBranch'
-        deploymentET = etree.SubElement(catalogET, 'deployment')
-        xmldoc = etree.ElementTree(root)
-        if args["--output"]:
-            outFile = open(args["--output"], 'w')
-            xmldoc.write(outFile, pretty_print=rgs["--pretty_print"])
+    # if args["generate"]:
+    #     root = etree.Element('config', xmlns='http://tail-f.com/ns/config/1.0')
+    #     print(type(root))
+    #     print(root.tag)
+    #     catalogET = etree.SubElement(root, 'catalog', xmlns='http://cisco.com/ns/branch-infra-common')
+    #     nameET = etree.SubElement(catalogET, 'name')
+    #     nameET.text = 'vBranch'
+    #     deploymentET = etree.SubElement(catalogET, 'deployment')
+    #     xmldoc = etree.ElementTree(root)
+    #     if args["--output"]:
+    #         outFile = open(args["--output"], 'w')
+    #         xmldoc.write(outFile, pretty_print=rgs["--pretty_print"])
 
 
 if __name__ == "__main__":
